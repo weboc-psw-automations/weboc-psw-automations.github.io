@@ -25,9 +25,11 @@ p{margin:0 0 1em;max-width:62ch}
 .btn:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 .btn[disabled]{opacity:.6;cursor:wait}
 .sub{color:var(--mute);font-size:.9rem}
+header a{font-weight:700}
 header{padding:18px 0;border-bottom:1px solid var(--line)}
 header .w{display:flex;justify-content:space-between;align-items:center}
 .logo{font-weight:700;letter-spacing:-.01em}
+.g{color:var(--acc)}
 .hero{display:grid;gap:40px;grid-template-columns:1.1fr .9fr;align-items:center;padding:64px 0}
 .sheet{background:var(--card);border:1px solid var(--line);border-radius:6px;font:.85rem/1.4 ui-monospace,Consolas,monospace;overflow:hidden}
 .sheet div{display:grid;grid-template-columns:1fr 1.3fr;padding:9px 14px;border-top:1px solid var(--line)}
@@ -66,8 +68,8 @@ input[type=email],input[type=text]{width:100%;padding:.65em .8em;border:1px soli
 <main class="w">
 <div class="hero">
   <div>
-    <h1>Your GD data from WeBOC and PSW, straight into Excel.</h1>
-    <p>Stop copying GD details by hand. WeBOC / PSW logs in, reads each Goods Declaration, fills your workbook, downloads the PDFs and fetches balances, even on a slow connection.</p>
+    <h1>Your GD data from <span class="g">WeBOC</span> and <span class="g">PSW</span>, straight into Excel.</h1>
+    <p>Stop copying GD details by hand. <span class="g">WeBOC</span> / <span class="g">PSW</span> logs in, reads each Goods Declaration, fills your workbook, downloads the PDFs and fetches balances, even on a slow connection.</p>
     <button class="btn" id="dl">Download for Windows</button>
     <p class="sub" style="margin-top:12px">Free demo included. Needs Windows, Microsoft Excel and Google Chrome.</p>
   </div>
@@ -83,7 +85,7 @@ input[type=email],input[type=text]{width:100%;padding:.65em .8em;border:1px soli
 <section>
   <h2>What it does</h2>
   <div class="rows">
-    <div><b>Login</b><span>Signs in to WeBOC or PSW. A wrong password stops after one attempt, so there is no lockout risk.</span></div>
+    <div><b>Login</b><span>Signs in to <span class="g">WeBOC</span> or <span class="g">PSW</span>. A wrong password stops after one attempt, so there is no lockout risk.</span></div>
     <div><b>GD List</b><span>Import or Export, by date range or month. Multi-page, no duplicates.</span></div>
     <div><b>GD Detail</b><span>Header, packages, EIF/EF, items with all duties, and bond entries.</span></div>
     <div><b>GD Download</b><span>Prints all parts and merges them into one PDF per GD.</span></div>
@@ -107,7 +109,7 @@ input[type=email],input[type=text]{width:100%;padding:.65em .8em;border:1px soli
 <section>
   <h2>Get started</h2>
   <ol class="steps">
-    <li>Click <b>Download</b> and share your Gmail, WeBOC ID and PSW ID. Never your passwords.</li>
+    <li>Click <b>Download</b> and share your email and your <span class="g">WeBOC</span> or <span class="g">PSW</span> ID (one is enough). Never your passwords.</li>
     <li>We issue your profile and licence file.</li>
     <li>Put <code>App.exe</code>, <code>profiles.enc</code> and <code>license.key</code> in one folder and start the app. Set your own passwords inside it.</li>
   </ol>
@@ -129,13 +131,13 @@ input[type=email],input[type=text]{width:100%;padding:.65em .8em;border:1px soli
   <form id="f" novalidate>
     <h2>Get the download link</h2>
     <p class="sub">We use these details only to issue your profile and licence.</p>
-    <label for="g">Gmail address</label>
-    <input id="g" name="gmail" type="email" autocomplete="email" placeholder="name@gmail.com" required>
-    <label for="w">WeBOC ID</label>
-    <input id="w" name="weboc_id" type="text" autocomplete="off" required>
-    <label for="p">PSW ID</label>
-    <input id="p" name="psw_id" type="text" autocomplete="off" required>
-    <p class="sub" style="margin:10px 0 0"><b>Do not enter passwords.</b></p>
+    <label for="g">Email address</label>
+    <input id="g" name="email" type="email" autocomplete="email" placeholder="name@example.com" required>
+    <label for="w"><span class="g">WeBOC</span> ID</label>
+    <input id="w" name="weboc_id" type="text" autocomplete="off" placeholder="Leave blank if you don't have one">
+    <label for="p"><span class="g">PSW</span> ID</label>
+    <input id="p" name="psw_id" type="text" autocomplete="off" placeholder="Leave blank if you don't have one">
+    <p class="sub" style="margin:10px 0 0">Enter at least one ID. <b>Do not enter passwords.</b></p>
     <label class="chk"><input id="c" type="checkbox" required> I agree you may store these details to issue my licence.</label>
     <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
     <p id="msg" role="status"></p>
@@ -157,9 +159,9 @@ $("x").onclick = () => dlg.close();
 f.onsubmit = async e => {
   e.preventDefault();
   const d = Object.fromEntries(new FormData(f));
-  d.weboc_id = d.weboc_id.trim(); d.psw_id = d.psw_id.trim(); d.gmail = d.gmail.trim().toLowerCase();
-  if (!/^[^\s@]+@gmail\.com$/.test(d.gmail)) return say("Enter a valid Gmail address.", 1);
-  if (!d.weboc_id || !d.psw_id) return say("Enter both your WeBOC ID and PSW ID.", 1);
+  d.weboc_id = d.weboc_id.trim(); d.psw_id = d.psw_id.trim(); d.email = d.email.trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) return say("Enter a valid email address.", 1);
+  if (!d.weboc_id && !d.psw_id) return say("Enter at least one ID: WeBOC or PSW.", 1);
   if (!$("c").checked) return say("Please tick the agreement box.", 1);
   go.disabled = true; say("Saving...");
   try {
@@ -173,8 +175,8 @@ f.onsubmit = async e => {
   });
     if (!r.ok) throw new Error(r.error || "Could not save.");
     f.innerHTML = '<h2>Thank you</h2><p>Your details are saved. Your download is ready.</p>' +
+      '<p class="sub">Your Licence &amp; Profile Details will be shared with your email ID.<br>If not received within 24 hours, you may contact with <a href="mailto:automate4results@gmail.com">support team</a>.</p>' +
       '<a class="btn" id="open" target="_blank" rel="noopener" href="' + encodeURI(r.link) + '">Open download folder</a>';
-    window.open(r.link, "_blank", "noopener");
   } catch (err) {
     say("Error: " + err.message, 1); console.error(err);
     go.disabled = false;
