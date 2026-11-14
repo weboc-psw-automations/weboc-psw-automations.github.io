@@ -136,6 +136,9 @@ footer a:focus-visible,footer .btn:focus-visible{outline:3px solid #fff;outline-
 .fbar{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;margin-top:36px;padding:16px 0;border-top:1px solid rgba(255,255,255,.22);font-size:.85rem;color:rgba(255,255,255,.8)}
 @media (max-width:760px){.fgrid{grid-template-columns:1fr}.hr,header nav{gap:12px}.logo{font-size:.92rem}}
 dialog{border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);padding:26px;width:min(440px,92vw)}
+.dx{position:absolute;top:10px;right:10px;width:34px;height:34px;border:0;border-radius:50%;background:none;color:var(--mute);font-size:1.15rem;line-height:1;cursor:pointer;display:grid;place-items:center}
+.dx:hover{background:var(--line);color:var(--ink)}
+.dx:focus-visible{outline:3px solid var(--acc)}
 dialog::backdrop{background:rgba(5,12,16,.6)}
 label{display:block;font-weight:500;font-size:.92rem;margin:14px 0 4px}
 input[type=email],input[type=text]{width:100%;padding:.65em .8em;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
@@ -143,6 +146,8 @@ input[type=email],input[type=text]{width:100%;padding:.65em .8em;border:1px soli
 .hp{position:absolute;left:-9999px}
 .row{display:flex;gap:10px;margin-top:18px;align-items:center}
 .btn.ghost{background:none;color:var(--mute);border:1px solid var(--line)}
+.warn{margin-top:14px;padding:14px 16px;background:var(--bg);border:1px solid var(--line);border-left:4px solid #e0a100;border-radius:8px}
+.warn p{margin:6px 0 10px;max-width:none}
 #msg{min-height:1.4em;font-size:.88rem;margin:10px 0 0}
 @media (max-width:760px){.listwrap{min-height:0}.list{position:static;max-height:320px}.hero,.group,.tut{grid-template-columns:1fr}.hero{padding:40px 0}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
@@ -155,7 +160,8 @@ input[type=email],input[type=text]{width:100%;padding:.65em .8em;border:1px soli
 <div class="hero">
   <div>
     <h1>Your GD data from <span class="g">WeBOC</span> and <span class="g">PSW</span>, straight into Excel.</h1>
-    <p>Stop copying GD details by hand. <span class="g">WeBOC</span> / <span class="g">PSW</span> logs in, reads each Goods Declaration, fills your workbook, downloads the PDFs and fetches balances, even on a slow connection.</p>
+    <p>From login to ledger — <span class="g">WeBOC</span> / <span class="g">PSW</span> reads each Goods Declaration, populates your workbook, downloads the PDFs, and retrieves balances. Engineered for accuracy and built for low-bandwidth environments.</p>
+  
     <button class="btn" id="dl">Download for Windows</button>
     <p class="sub" style="margin-top:12px">Free demo included. Needs Windows, Microsoft Excel and Google Chrome.</p>
   </div>
@@ -262,6 +268,7 @@ input[type=email],input[type=text]{width:100%;padding:.65em .8em;border:1px soli
 </footer>
 
 <dialog id="dlg">
+  <button class="dx" id="dx" type="button" aria-label="Close">&#10005;</button>
   <form id="f" novalidate>
     <h2>Get the download link</h2>
     <p class="sub">We use these details only to issue your profile and licence.</p>
@@ -283,12 +290,15 @@ input[type=email],input[type=text]{width:100%;padding:.65em .8em;border:1px soli
 </dialog> 
 
 <script>
+const FILE_ID = "";  // Drive file ID of the app (the part after /d/ in the file link). Empty = use the one from the script
+const API_KEY = "";  // optional Google API key (Drive API only, locked to this site): direct download of any file type, even .exe
+const FILE_URL = ""; // paste your GitHub Release file link here (direct download, no Google Drive)
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz50gBP4XEo2-mrKfJjkzAn043Xv26dtvOozvSa9_toTF3bmJ4454UJ00cdWSul19Kd/exec"; // from Deploy > Web app
 const $ = id => document.getElementById(id), dlg = $("dlg"), f = $("f"), msg = $("msg"), go = $("go");
 const say = (t, bad) => { msg.textContent = t; msg.className = bad ? "bad" : "ok"; };
 
 $("dl").onclick = $("dl2").onclick = () => { say(""); dlg.showModal(); };
-$("x").onclick = () => dlg.close();
+$("x").onclick = $("dx").onclick = () => dlg.close();
 
 f.onsubmit = async e => {
   e.preventDefault();
@@ -308,9 +318,19 @@ f.onsubmit = async e => {
     setTimeout(() => no(new Error("Timed out")), 15000);
   });
     if (!r.ok) throw new Error(r.error || "Could not save.");
+    const esc = u => encodeURI(u).replace(/&/g, "&amp;");
     f.innerHTML = '<h2>Thank you</h2><p>Your details are saved. Your download is ready.</p>' +
       '<p class="sub">Your Licence &amp; Profile Details will be shared with your email ID.<br>If not received within 24 hours, you may contact with <a href="mailto:automate4results@gmail.com">support team</a>.</p>' +
-      '<a class="btn" id="open" target="_blank" rel="noopener" href="' + encodeURI(r.link) + '">Open download folder</a>';
+      ((FILE_URL || FILE_ID || r.file) ? '<div class="row"><button class="btn" id="get" type="button">&#11015; Download App</button></div><p class="sub" id="dlnote"></p><div id="dlbox"></div>'
+              : '<p class="bad">Download link unavailable. Please contact support.</p>');
+    if (FILE_URL || FILE_ID || r.file) $("get").onclick = () => {
+      const id = FILE_ID || ((r.file || "").match(/[?&]id=([\w-]+)/) || [])[1];
+      const url = FILE_URL ||
+        (API_KEY ? "https://www.googleapis.com/drive/v3/files/" + id + "?alt=media&key=" + API_KEY   /* Drive API: direct file, no warning page */
+                 : "https://drive.usercontent.google.com/download?id=" + id + "&export=download&confirm=t"); /* works without a warning for a .zip */
+      location.href = url;                                   /* file downloads here; the page stays open */
+      $("dlnote").textContent = "Your download should start shortly. Check your browser's Downloads.";
+    };
   } catch (err) {
     say("Error: " + err.message, 1); console.error(err);
     go.disabled = false;
