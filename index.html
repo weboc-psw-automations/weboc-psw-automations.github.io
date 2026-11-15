@@ -151,10 +151,272 @@ input[type=email],input[type=text]{width:100%;padding:.65em .8em;border:1px soli
 #msg{min-height:1.4em;font-size:.88rem;margin:10px 0 0}
 @media (max-width:760px){.listwrap{min-height:0}.list{position:static;max-height:320px}.hero,.group,.tut{grid-template-columns:1fr}.hero{padding:40px 0}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* ---- Pricing ---- */
+.plans{display:grid;gap:16px;grid-template-columns:repeat(4,1fr);margin-top:22px}
+.plan{position:relative;text-align:left;font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:12px;padding:22px 18px 18px;cursor:pointer;display:flex;flex-direction:column;gap:6px;box-shadow:0 8px 22px rgba(8,24,30,.07);transition:transform .15s,border-color .15s}
+.plan:hover{transform:translateY(-3px);border-color:var(--acc)}
+.plan[aria-pressed=true]{border-color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 25%,transparent)}
+.plan.hot{border-color:var(--acc)}
+.plan .tag{position:absolute;top:-12px;left:16px;background:var(--acc);color:var(--accink);font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 10px;border-radius:999px}
+.plan h3{margin:6px 0 0;font-size:1rem;line-height:1.3}
+.plan .pr{font-size:1.7rem;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.plan .pr small{font-size:.9rem;font-weight:500;color:var(--mute)}
+.plan .off{display:inline-block;width:fit-content;background:color-mix(in srgb,var(--acc) 14%,transparent);color:var(--acc);font-size:.8rem;font-weight:700;padding:2px 9px;border-radius:6px}
+.plan .tot{color:var(--mute);font-size:.85rem}
+.plan .pick{margin-top:auto;padding-top:10px;font-weight:600;color:var(--acc);font-size:.92rem}
+.plan[aria-pressed=true] .pick::before{content:"✓ "}
+#pay{width:min(780px,94vw);max-height:90vh;overflow-y:auto;padding:26px;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+#pay h2{margin-right:36px}
+.sel{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--bg);border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:8px;margin-bottom:20px}
+.sel b{font-size:1.15rem}
+.pgrid{display:grid;gap:24px;grid-template-columns:1fr 1fr;align-items:start}
+.methods{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
+.mth{font:inherit;font-weight:600;padding:.55em 1em;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.mth[aria-pressed=true]{background:var(--acc);color:var(--accink);border-color:var(--acc)}
+.qrbox{display:grid;place-items:center;gap:10px;text-align:center;padding:16px;border:1px dashed var(--line);border-radius:10px;background:var(--bg)}
+.qrbox img{width:80%;max-width:220px;aspect-ratio:1;object-fit:contain;background:#fff;border-radius:8px;padding:8px}
+.qrbox .nq{display:none;color:var(--mute);font-size:.9rem}
+.acct{margin:0;padding:0;list-style:none;width:100%;text-align:left;font-size:.92rem}
+.acct li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-top:1px solid var(--line)}
+.acct li span:first-child{color:var(--mute)}
+.acct li span:last-child{font-weight:600;text-align:right;word-break:break-all}
+.how{margin:0;padding-left:1.2em}
+.how li{margin-bottom:12px}
+.how li::marker{font-weight:700;color:var(--acc)}
+.how p{margin:0}
+@media (max-width:900px){.plans{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){.plans,.pgrid{grid-template-columns:1fr}}
+
+.pfw{margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
+.pfw h3{margin:0 0 4px}
+.pfg{display:grid;gap:0 16px;grid-template-columns:1fr 1fr}
+.pfg .full{grid-column:1/-1}
+input[type=file]{width:100%;padding:.55em .6em;border:1px dashed var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
+#pmsg{min-height:1.4em;font-size:.88rem;margin:10px 0 0}
+#pmsg.bad{color:var(--bad)}#pmsg.ok{color:var(--ok)}
+.done{text-align:center;padding:10px 0}
+.done .big{font-size:2.4rem}
+@media (max-width:760px){.pfg{grid-template-columns:1fr}}
+
+/* ---- wide payment dialog: everything visible at once ---- */
+#pay{width:min(1180px,96vw);max-height:96vh;padding:20px 24px}
+#pay h2{margin:0 36px 10px 0;font-size:1.3rem}
+#pay .sel{margin-bottom:14px;padding:9px 14px}
+#pay .sel b{font-size:1.05rem}
+#pay .pgrid{grid-template-columns:1.05fr .85fr 1.15fr;gap:22px}
+#pay .methods{margin:6px 0 10px}
+#pay .mth{padding:.45em .8em;font-size:.9rem}
+#pay .qrbox{padding:12px;gap:8px}
+#pay .qrbox img{width:200px;height:150px}
+#pay .acct{font-size:.85rem}
+#pay .acct li{padding:4px 0}
+#pay .how li{margin-bottom:10px;font-size:.92rem}
+#pay .pfw{margin:0;padding:0 0 0 22px;border-top:0;border-left:1px solid var(--line)}
+#pay .pfg{grid-template-columns:1fr;gap:0}
+#pay .pfw label{font-size:.85rem}
+#pay .pfw input{padding:.45em .6em}
+#pay .pfw .sub{font-size:.85rem}
+#pmsg{margin:6px 0 0;min-height:1.2em}
+@media (max-width:1000px){
+  #pay .pgrid{grid-template-columns:1fr}
+  #pay .pfw{padding:16px 0 0;border-left:0;border-top:1px solid var(--line)}
+}
+#pay .pfw label{margin:6px 0 2px}#pay .pfw input{margin:0}#pay .pfw .sub{margin:2px 0 4px}
+
+#dlg{width:min(660px,94vw)}
+#dlg label{margin:10px 0 3px}
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+@media (max-width:560px){.dg{grid-template-columns:1fr}}
+
+/* ---- Pricing cards (v2) ---- */
+.plans{grid-template-columns:repeat(4,1fr);gap:18px;align-items:stretch;margin-top:26px}
+.pc{position:relative;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;cursor:pointer;box-shadow:0 8px 22px rgba(8,24,30,.07);transition:transform .18s,box-shadow .18s}
+.pc:hover{transform:translateY(-5px);box-shadow:0 18px 36px rgba(8,24,30,.16)}
+.pc.on{outline:3px solid var(--c1);outline-offset:2px}
+.pc .ph{position:relative;padding:20px 18px 18px;color:#fff;background:linear-gradient(135deg,var(--c1),var(--c2))}
+.pc .ic{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.2);display:grid;place-items:center;margin-bottom:12px}
+.pc .ic svg{width:24px;height:24px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pc h3{margin:0;font-size:1.15rem;line-height:1.25;color:#fff}
+.pc .tg{margin:4px 0 0;font-size:.85rem;opacity:.9;color:#fff;min-height:1.5em}
+.pc .bd{position:absolute;top:14px;right:14px;background:#fff;color:var(--c2);font-size:.7rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+.pc .pb{display:flex;flex-direction:column;flex:1;padding:18px}
+.pc .prow{display:flex;align-items:baseline;gap:6px}
+.pc .pr{white-space:nowrap;font-size:2rem;font-weight:800;letter-spacing:-.02em;line-height:1.1;color:var(--c1)}
+.pc .cur{font-size:.9rem;font-weight:700;margin-right:3px;letter-spacing:0}
+.pc .per{color:var(--mute);font-size:.9rem;white-space:nowrap}
+.pc .sv{min-height:1.5em;margin-top:4px;font-size:.88rem;color:var(--mute)}
+.pc .sv s{margin-right:6px}
+.pc .sv b{background:color-mix(in srgb,var(--c1) 15%,transparent);color:var(--c1);padding:2px 8px;border-radius:6px;font-size:.78rem}
+.pc .bl{margin:6px 0 14px;padding-bottom:14px;border-bottom:1px solid var(--line);font-size:.85rem;color:var(--mute);line-height:1.5;min-height:calc(3em + 14px)}
+.pc .ft{list-style:none;margin:0 0 18px;padding:0;display:grid;gap:9px;font-size:.9rem}
+.pc .ft li{display:flex;gap:9px;align-items:flex-start;line-height:1.35}
+.pc .ft svg{flex:none;width:18px;height:18px;margin-top:1px;padding:2px;border-radius:50%;background:color-mix(in srgb,var(--c1) 16%,transparent);fill:none;stroke:var(--c1);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.pc .ft li.x{font-weight:600}
+.pc .cta{margin-top:auto;font:inherit;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--c1),var(--c2));border:0;border-radius:10px;padding:.8em 1em;cursor:pointer;width:100%}
+.pc .cta:hover{filter:brightness(1.08)}
+.pc.on .cta{box-shadow:0 0 0 3px color-mix(in srgb,var(--c1) 30%,transparent)}
+@media (max-width:1100px){.plans{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.plans{grid-template-columns:1fr}}
+
+/* ---- Pricing cards (v3): unique points per plan + shared "included" band ---- */
+.pc .bf{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:.78rem}
+.pc .bf span{color:var(--mute);text-transform:uppercase;letter-spacing:.05em;font-weight:700}
+.pc .bf b{background:color-mix(in srgb,var(--c1) 14%,transparent);color:var(--c1);padding:3px 9px;border-radius:999px;line-height:1.3}
+.pc .bf{flex-direction:column;align-items:flex-start;gap:5px}
+.pc .bl{min-height:calc(3em + 0px);border-bottom:0;padding-bottom:0;margin-bottom:10px}
+.pc .sb{min-height:calc(2.5em + 22px);display:flex;gap:10px;align-items:center;padding:11px 12px;border-radius:10px;color:#fff;font-weight:700;font-size:.9rem;line-height:1.25;background:linear-gradient(135deg,var(--c1),var(--c2))}
+.pc .sbi{flex:none;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.22);display:grid;place-items:center;font-size:.9rem}
+.pc .dy{margin:10px 0 14px;padding-bottom:14px;border-bottom:1px solid var(--line);font-size:.85rem;color:var(--mute)}
+.pc .dy b{color:var(--ink)}
+.pc .ft{gap:8px;margin-bottom:18px}
+.pc .ft li{font-weight:600}
+.incw{margin-top:30px;padding:22px;border:1px solid var(--line);border-radius:16px;background:var(--card);box-shadow:0 8px 22px rgba(8,24,30,.05)}
+.incw h3{margin:0 0 16px;text-align:center;font-size:1.05rem}
+.inc{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.ci{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;font-size:.85rem;font-weight:600;line-height:1.3}
+.ci .cic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 15%,transparent)}
+.ci svg{width:24px;height:24px;fill:none;stroke:var(--c);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:1100px){.inc{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:640px){.inc{grid-template-columns:repeat(2,1fr)}}
+
+/* ---- Launch offer ---- */
+.ob{display:grid;grid-template-columns:1.35fr 1fr;gap:28px;align-items:center;padding:34px;border-radius:20px;color:#fff;background:linear-gradient(135deg,#f97316 0%,#e11d48 55%,#7c1d6f 100%);box-shadow:0 22px 50px rgba(225,29,72,.28);position:relative;overflow:hidden}
+.ob::after{content:"";position:absolute;right:-80px;top:-80px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.1)}
+.ob>*{position:relative;z-index:1}
+.ob h2{color:#fff;font-size:clamp(1.6rem,3.4vw,2.3rem);margin:12px 0}
+.ob .hl{background:#fff;color:#be123c;padding:0 .3em;border-radius:8px;white-space:nowrap}
+.ob p{margin:0 0 12px;color:rgba(255,255,255,.95)}
+.ob .ob-lead{font-size:1.1rem}
+.ob-tag{display:inline-block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);padding:5px 14px;border-radius:999px;font-size:.78rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+.ob-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
+.ob-b1{background:#fff;color:#be123c;font-weight:800;box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.ob-b2{background:rgba(255,255,255,.16);color:#fff;border:2px solid #fff}
+.pcmp{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);border-radius:16px;padding:22px;text-align:center;backdrop-filter:blur(4px)}
+.pcmp span{display:block;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;opacity:.9}
+.pcmp small{display:block;opacity:.85}
+.pold s{display:block;font-size:1.5rem;font-weight:700;opacity:.8}
+.parr{font-size:1.8rem;line-height:1;margin:6px 0}
+.pnew b{display:block;font-size:2.6rem;font-weight:800;line-height:1.1}
+.psave{margin-top:14px;background:#fff;color:#be123c;font-weight:800;border-radius:10px;padding:9px 12px;font-size:.9rem}
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.wc{position:relative;background:var(--card);border:1px solid var(--line);border-top:5px solid var(--c);border-radius:14px;padding:20px;box-shadow:0 8px 22px rgba(8,24,30,.06);transition:transform .15s,box-shadow .15s}
+.wc:hover{transform:translateY(-4px);box-shadow:0 16px 32px rgba(8,24,30,.14)}
+.wi{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;font-size:1.5rem;background:color-mix(in srgb,var(--c) 16%,transparent);margin-bottom:12px}
+.wc h3{margin:0 0 6px;font-size:1.05rem;color:var(--c)}
+.wc p{margin:0;font-size:.92rem;color:var(--mute)}
+.demo{margin-top:26px;display:grid;grid-template-columns:1.2fr 1fr;gap:26px;align-items:center;padding:30px;border-radius:18px;color:#fff;background:linear-gradient(135deg,#0f2e3d,#0a6f6a);box-shadow:0 18px 40px rgba(10,60,70,.3)}
+.demo h3{margin:4px 0 8px;font-size:1.6rem;color:#fff}
+.demo p{margin:0 0 10px;color:rgba(255,255,255,.92)}
+.demo ul{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:8px}
+.demo li{padding-left:28px;position:relative;font-weight:600}
+.demo li::before{content:"✓";position:absolute;left:0;top:0;width:20px;height:20px;border-radius:50%;background:#34d399;color:#064e3b;display:grid;place-items:center;font-size:.75rem;font-weight:800}
+.demo-r{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:20px;text-align:center}
+.dnote{font-size:.95rem}
+.dfire{font-weight:800;font-size:1.05rem;color:#fcd34d!important}
+.demo-r .btn{margin-top:4px}
+.dlink{display:block;margin-top:12px;color:#fff;font-size:.9rem}
+@media (max-width:860px){.ob,.demo{grid-template-columns:1fr}.why{grid-template-columns:1fr 1fr}.ob{padding:24px}}
+@media (max-width:560px){.why{grid-template-columns:1fr}}
+
+/* ---- Many customers? One profile. ---- */
+.mc{display:grid;grid-template-columns:1.05fr 1fr;gap:26px;align-items:center}
+.mc-card{position:relative;padding:26px;border-radius:18px;color:#fff;background:linear-gradient(135deg,#7c3aed,#2563eb);box-shadow:0 18px 40px rgba(76,29,149,.28)}
+.mc-badge{display:inline-block;background:#fcd34d;color:#451a03;font-size:.72rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:4px 11px;border-radius:999px}
+.mc-card h3{margin:12px 0 8px;font-size:1.7rem;color:#fff}
+.mc-card p{margin:0;color:rgba(255,255,255,.95)}
+.mc-eq{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 8px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.3)}
+.mc-eq b{font-size:2rem;font-weight:800;line-height:1}
+.mc-eq span{font-size:.85rem;opacity:.9;margin-right:6px}
+.mc-eq i{font-style:normal;font-size:1.4rem}
+.mc-chips{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.mch{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;font-weight:700;font-size:.92rem;background:color-mix(in srgb,var(--c) 12%,var(--card));border:1px solid color-mix(in srgb,var(--c) 35%,transparent);color:var(--ink)}
+.mch span{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 22%,transparent)}
+.mc-ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:.93rem;font-weight:600}
+.mc-ul li{padding-left:28px;position:relative}
+.mc-ul li::before{content:"✓";position:absolute;left:0;top:0;width:20px;height:20px;border-radius:50%;background:color-mix(in srgb,var(--acc) 18%,transparent);color:var(--acc);display:grid;place-items:center;font-size:.75rem;font-weight:800}
+.mc-r{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:10px;box-shadow:0 12px 30px rgba(8,24,30,.1)}
+.mc-r svg{display:block;width:100%;height:auto}
+.mc-r .node rect{fill:var(--bg);stroke-width:2.5}
+.mc-r text{fill:var(--ink);font:700 14px system-ui,sans-serif}
+.mc-r text.s{font:500 11px system-ui,sans-serif;fill:var(--mute)}
+.mc-r text.hub{fill:#fff;font:800 15px system-ui,sans-serif}
+.mc-r .flow{stroke-dasharray:7 7;animation:flow 1.2s linear infinite}
+.mc-r .pulse{transform-origin:220px 180px;animation:pulse 2.4s ease-in-out infinite}
+@keyframes flow{to{stroke-dashoffset:-14}}
+@keyframes pulse{50%{transform:scale(1.12);opacity:.3}}
+@media (prefers-reduced-motion:reduce){.mc-r .flow,.mc-r .pulse{animation:none}}
+@media (max-width:860px){.mc{grid-template-columns:1fr}}
+
+/* ---- Polish v2: richer colour, depth and finish ---- */
+#offer .eyebrow,#pricing .eyebrow,#clients .eyebrow{display:inline-block;background:color-mix(in srgb,var(--acc) 13%,transparent);padding:4px 12px;border-radius:999px;margin-bottom:10px}
+
+/* Launch banner */
+.ob{background:
+  radial-gradient(circle at 10% 0%,rgba(255,255,255,.30),transparent 40%),
+  radial-gradient(circle at 100% 100%,rgba(255,221,102,.40),transparent 45%),
+  linear-gradient(120deg,#ff7a00 0%,#ff2e6e 52%,#8b3dff 100%);
+  box-shadow:0 28px 60px rgba(255,46,110,.32),inset 0 1px 0 rgba(255,255,255,.4)}
+.ob::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.22) 1.2px,transparent 1.5px);background-size:22px 22px;-webkit-mask-image:linear-gradient(135deg,transparent 30%,#000);mask-image:linear-gradient(135deg,transparent 30%,#000);opacity:.55;z-index:0}
+.ob .hl{background:linear-gradient(135deg,#fff7c2,#fbbf24);color:#7c2d00;box-shadow:0 6px 18px rgba(251,191,36,.55)}
+.ob-b1{transition:transform .15s,box-shadow .15s}
+.ob-b1:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(0,0,0,.28);filter:none}
+.ob-b2{transition:background .15s}
+.ob-b2:hover{background:rgba(255,255,255,.3);filter:none}
+.pcmp{background:linear-gradient(160deg,rgba(255,255,255,.26),rgba(255,255,255,.08));box-shadow:0 14px 34px rgba(80,0,60,.25),inset 0 1px 0 rgba(255,255,255,.5)}
+.psave{background:linear-gradient(135deg,#fff7c2,#fbbf24);color:#7c2d00;box-shadow:0 6px 16px rgba(251,191,36,.45)}
+.wc{box-shadow:0 12px 26px color-mix(in srgb,var(--c) 14%,transparent)}
+.wc:hover{box-shadow:0 20px 38px color-mix(in srgb,var(--c) 28%,transparent)}
+.wi{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 25%,transparent)}
+
+/* Free demo panel */
+.demo{background:
+  radial-gradient(circle at 92% 0%,rgba(52,211,153,.50),transparent 45%),
+  radial-gradient(circle at 0% 100%,rgba(56,189,248,.38),transparent 48%),
+  linear-gradient(135deg,#0a1f5c 0%,#0b5f8a 55%,#059669 100%);
+  box-shadow:0 28px 60px rgba(5,95,140,.36),inset 0 1px 0 rgba(255,255,255,.28)}
+.dbadge{display:inline-block;background:linear-gradient(135deg,#fde68a,#f59e0b);color:#451a03;font-size:.76rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:5px 13px;border-radius:999px;box-shadow:0 6px 16px rgba(245,158,11,.4)}
+.demo .dlead{font-size:1.02rem;line-height:1.55}
+.demo .dlead b{color:#fde68a}
+.dtiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.dt{background:linear-gradient(160deg,rgba(255,255,255,.2),rgba(255,255,255,.07));border:1px solid rgba(255,255,255,.3);border-radius:12px;padding:12px 8px;text-align:center}
+.dt span{display:block;font-size:1.5rem;margin-bottom:4px}
+.dt b{display:block;font-size:.9rem}
+.dt small{display:block;font-size:.76rem;opacity:.85;margin-top:2px}
+.demo-r{background:linear-gradient(160deg,rgba(255,255,255,.18),rgba(255,255,255,.06));border-color:rgba(255,255,255,.35)}
+.dres{font-size:1.1rem;line-height:1.45}
+.dres b{color:#fde68a}
+.dnote{font-size:.88rem;opacity:.9}
+.dfire{display:inline-block;background:linear-gradient(135deg,#fff7c2,#fbbf24);color:#7c2d00!important;padding:5px 14px;border-radius:999px;font-size:.9rem;margin:2px 0 12px!important}
+@media (max-width:560px){.dtiles{grid-template-columns:1fr}}
+
+/* Pricing */
+.pc{box-shadow:0 16px 34px color-mix(in srgb,var(--c1) 20%,transparent)}
+.pc:hover{box-shadow:0 26px 48px color-mix(in srgb,var(--c1) 34%,transparent)}
+.pc .ph{background:radial-gradient(circle at 88% -10%,rgba(255,255,255,.38),transparent 55%),linear-gradient(135deg,var(--c1),var(--c2))}
+.pc .ic{box-shadow:inset 0 0 0 1px rgba(255,255,255,.35)}
+.pc .pr{background:linear-gradient(135deg,var(--c1),var(--c2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.pc .sb{box-shadow:0 10px 20px color-mix(in srgb,var(--c1) 35%,transparent);background:radial-gradient(circle at 90% 0%,rgba(255,255,255,.3),transparent 55%),linear-gradient(135deg,var(--c1),var(--c2))}
+.pc .cta{background:radial-gradient(circle at 90% 0%,rgba(255,255,255,.3),transparent 55%),linear-gradient(135deg,var(--c1),var(--c2));box-shadow:0 8px 18px color-mix(in srgb,var(--c1) 38%,transparent)}
+.incw{border:2px solid transparent;background:linear-gradient(var(--card),var(--card)) padding-box,linear-gradient(120deg,#ff8a00,#ec4899,#8b5cf6,#06b6d4) border-box;box-shadow:0 14px 32px rgba(139,92,246,.12)}
+.ci .cic{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 28%,transparent)}
+
+/* Manage Multiple Clients */
+.mc-card{background:
+  radial-gradient(circle at 100% 0%,rgba(255,255,255,.32),transparent 45%),
+  radial-gradient(circle at 0% 100%,rgba(34,211,238,.50),transparent 52%),
+  linear-gradient(135deg,#8b5cf6 0%,#4f46e5 50%,#0ea5e9 100%);
+  box-shadow:0 28px 56px rgba(79,70,229,.36),inset 0 1px 0 rgba(255,255,255,.38)}
+.mc-badge{background:linear-gradient(135deg,#fde68a,#f59e0b);box-shadow:0 6px 14px rgba(245,158,11,.4)}
+.mc-eq b{color:#fde68a}
+.mch{background:color-mix(in srgb,var(--c) 14%,var(--card));box-shadow:0 8px 16px color-mix(in srgb,var(--c) 16%,transparent)}
+.mc-r{background:radial-gradient(circle at 50% 50%,rgba(139,92,246,.13),transparent 62%),var(--card);box-shadow:0 18px 40px rgba(79,70,229,.14)}
+.mc-r .node{filter:drop-shadow(0 6px 10px rgba(0,0,0,.14))}
+.mc-r .lines path{stroke-width:3}
 </style>
 </head>
 <body id="top">
-<header><div class="w"><span class="logo">WeBOC / PSW Automations</span><div class="hr"><nav><a href="#tutorials" class="sub">Tutorials</a><a href="#faq" class="sub">FAQ</a></nav><button class="tt" id="tt" type="button" aria-label="Switch theme"></button></div></div></header>
+<header><div class="w"><span class="logo">WeBOC / PSW Automations</span><div class="hr"><nav><a href="#tutorials" class="sub">Tutorials</a><a href="#pricing" class="sub">Pricing</a><a href="#faq" class="sub">FAQ</a></nav><button class="tt" id="tt" type="button" aria-label="Switch theme"></button></div></div></header>
 
 <main class="w">
 <div class="hero">
@@ -163,7 +425,7 @@ input[type=email],input[type=text]{width:100%;padding:.65em .8em;border:1px soli
     <p>From login to ledger — <span class="g">WeBOC</span> / <span class="g">PSW</span> reads each Goods Declaration, populates your workbook, downloads the PDFs, and retrieves balances. Engineered for accuracy and built for low-bandwidth environments.</p>
   
     <button class="btn" id="dl">Download for Windows</button>
-    <p class="sub" style="margin-top:12px">Free demo included. Needs Windows, Microsoft Excel and Google Chrome.</p>
+    <p class="sub" style="margin-top:12px">Free demo included: the real app on your portal, within a time limit. Needs Windows, Microsoft Excel and Google Chrome.</p>
   </div>
   <div class="sheet" role="group" aria-label="Example of the status column the app fills in">
     <div class="sbar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>GD_Tracker.xlsx</span><span class="live">Running</span></div>
@@ -175,6 +437,56 @@ input[type=email],input[type=text]{width:100%;padding:.65em .8em;border:1px soli
     <div class="sfoot"><div class="prog" aria-hidden="true"><i></i></div><span>3 of 4 completed &middot; 1 will retry &middot; 🛡️ Backup saved before run</span></div>
   </div>
 </div>
+
+<section id="offer">
+  <div class="ob">
+    <div class="ob-l">
+      <span class="ob-tag">🚀 Limited-time launch offer</span>
+      <h2>Limited-Time Launch Offer – Get <span class="hl">50% OFF!</span></h2>
+      <p class="ob-lead">Transform the way you manage <b>WeBOC</b> &amp; <b>PSW</b> operations — at half the regular monthly price!</p>
+      <p>We're celebrating the launch of our application with an exclusive 50% discount. Don't miss this opportunity to automate your routine work, improve accuracy and make better use of your valuable time.</p>
+      <div class="ob-cta"><button class="btn ob-b1" id="dl3" type="button">▶ Try Free Demo</button><a class="btn ob-b2" href="#pricing">Claim 50% OFF</a></div>
+    </div>
+    <div class="ob-r" aria-label="Launch price compared with regular price">
+      <div class="pcmp">
+        <div class="pold"><span>Regular price</span><s>Rs. 10,000</s><small>per month</small></div>
+        <div class="parr" aria-hidden="true">↓</div>
+        <div class="pnew"><span>Launch price</span><b>Rs. 5,000</b><small>per month</small></div>
+        <div class="psave">You save Rs. 5,000 every month</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="shd" style="margin-top:34px"><span class="eyebrow">Why try it</span><h2>Why should you try the app?</h2></div>
+  <div class="why">
+    <div class="wc" style="--c:#f97316"><div class="wi" aria-hidden="true">⚡</div><h3>Save Valuable Time</h3><p>Automate repetitive tasks and process large volumes of GD data faster.</p></div>
+    <div class="wc" style="--c:#2563eb"><div class="wi" aria-hidden="true">👥</div><h3>Reduce Manpower Costs</h3><p>Handle more client work without proportionately increasing your workforce.</p></div>
+    <div class="wc" style="--c:#e11d48"><div class="wi" aria-hidden="true">🎯</div><h3>Improve Accuracy</h3><p>Minimize manual data entry and reduce the risk of human error.</p></div>
+    <div class="wc" style="--c:#059669"><div class="wi" aria-hidden="true">📊</div><h3>Boost Productivity</h3><p>Manage GD lists, detailed declarations, PDFs and balances directly through Excel.</p></div>
+    <div class="wc" style="--c:#7c3aed"><div class="wi" aria-hidden="true">🏢</div><h3>Manage More Clients</h3><p>Handle multiple customers, sister concerns or group companies through one centralized profile.</p></div>
+    <div class="wc" style="--c:#0891b2"><div class="wi" aria-hidden="true">🛡️</div><h3>Work with Confidence</h3><p>Benefit from automated backups, resumable operations and secure local data handling.</p></div>
+  </div>
+
+  <div class="demo">
+    <div class="demo-l">
+      <span class="dbadge">✨ Not just a tutorial</span>
+      <h3>Experience It Before You Decide!</h3>
+      <p class="dlead">The Free Demo is <b>not a video or a walkthrough</b>. You get the <b>real app</b>: run complete operations on your own portal and use every feature, within a set limit and timeframe.</p>
+      <div class="dtiles">
+        <div class="dt"><span aria-hidden="true">🌐</span><b>Your real portal</b><small>Complete operations</small></div>
+        <div class="dt"><span aria-hidden="true">🧰</span><b>All app features</b><small>Every feature included</small></div>
+        <div class="dt"><span aria-hidden="true">⏱️</span><b>Limited period</b><small>Within a set limit</small></div>
+      </div>
+    </div>
+    <div class="demo-r">
+      <p class="dres">See what you <b>save</b>, <b>gain</b> and <b>improve</b> for a <b>very small cost</b>.</p>
+      <p class="dnote">The more GDs and clients you handle, the more you save.</p>
+      <p class="dfire">🔥 Launch offer: 50% OFF</p>
+      <button class="btn ob-b1" id="dl4" type="button">▶ Start Free Demo</button>
+      <a class="dlink" href="#tutorials">or watch how it works →</a>
+    </div>
+  </div>
+</section>
 
 <section id="tutorials">
   <h2>Watch how it works</h2>
@@ -203,15 +515,47 @@ input[type=email],input[type=text]{width:100%;padding:.65em .8em;border:1px soli
   </div>
 </section>
 
-<section>
-  <h2>Many customers? One profile.</h2>
-  <div class="group">
-    <div>
-      <p>Group of Companies, Sister Concerns or Agents with several clients no longer need a separate setup for each. One profile holds all your customers, each with its own login, password, data folder and browser profile. Pick the customer at login and work.</p>
+<section id="clients">
+  <div class="shd"><span class="eyebrow">Multi-client</span><h2>Many customers? One profile.</h2></div>
+  <div class="mc">
+    <div class="mc-l">
+      <div class="mc-card">
+        <span class="mc-badge">★ Top pick for clearing agents</span>
+        <h3>Manage Multiple Clients</h3>
+        <p>Group of Companies, Sister Concerns or Agents with several clients no longer need a separate setup for each. <b>One profile holds all your customers</b> — pick the customer at login and work.</p>
+        <div class="mc-eq" aria-hidden="true"><b>1</b><span>profile</span><i>→</i><b>All</b><span>your clients</span></div>
+      </div>
+      <div class="mc-chips">
+        <div class="mch" style="--c:#f97316"><span aria-hidden="true">🔑</span>Own login</div>
+        <div class="mch" style="--c:#2563eb"><span aria-hidden="true">🔒</span>Own password</div>
+        <div class="mch" style="--c:#059669"><span aria-hidden="true">📁</span>Own data folder</div>
+        <div class="mch" style="--c:#7c3aed"><span aria-hidden="true">🌐</span>Own browser profile</div>
+      </div>
+      <ul class="mc-ul">
+        <li>Switch customers at login, no separate setup</li>
+        <li>Handle more clients without adding headcount</li>
+        <li>Every client's data stays in its own folder</li>
+      </ul>
     </div>
-    <ul aria-label="Example profile">
-      <li>Your group</li><li>Customer A</li><li>Customer B</li><li>Customer C</li>
-    </ul>
+    <div class="mc-r">
+      <svg viewBox="0 0 440 360" role="img" aria-label="One profile connected to Customer A, Customer B, Customer C and a sister concern">
+        <defs><linearGradient id="hubg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:#8b5cf6"/><stop offset="1" style="stop-color:#06b6d4"/></linearGradient></defs>
+        <g class="lines" fill="none" stroke-width="2.5" stroke-linecap="round">
+          <path class="flow" style="stroke:#f97316" d="M220 180 L100 78"/>
+          <path class="flow" style="stroke:#2563eb" d="M220 180 L340 78"/>
+          <path class="flow" style="stroke:#059669" d="M220 180 L100 282"/>
+          <path class="flow" style="stroke:#7c3aed" d="M220 180 L340 282"/>
+        </g>
+        <g class="node"><rect x="30" y="50" width="140" height="56" rx="12" style="stroke:#f97316"/><text x="100" y="74" text-anchor="middle">Customer A</text><text x="100" y="92" text-anchor="middle" class="s">own login &amp; folder</text></g>
+        <g class="node"><rect x="270" y="50" width="140" height="56" rx="12" style="stroke:#2563eb"/><text x="340" y="74" text-anchor="middle">Customer B</text><text x="340" y="92" text-anchor="middle" class="s">own login &amp; folder</text></g>
+        <g class="node"><rect x="30" y="254" width="140" height="56" rx="12" style="stroke:#059669"/><text x="100" y="278" text-anchor="middle">Customer C</text><text x="100" y="296" text-anchor="middle" class="s">own login &amp; folder</text></g>
+        <g class="node"><rect x="270" y="254" width="140" height="56" rx="12" style="stroke:#7c3aed"/><text x="340" y="278" text-anchor="middle">Sister concern</text><text x="340" y="296" text-anchor="middle" class="s">own login &amp; folder</text></g>
+        <circle cx="220" cy="180" r="62" fill="#8b5cf6" opacity=".2" class="pulse"/>
+        <circle cx="220" cy="180" r="50" fill="url(#hubg)"/>
+        <text x="220" y="176" text-anchor="middle" class="hub">Your</text>
+        <text x="220" y="194" text-anchor="middle" class="hub">profile</text>
+      </svg>
+    </div>
   </div>
 </section>
 
@@ -222,6 +566,35 @@ input[type=email],input[type=text]{width:100%;padding:.65em .8em;border:1px soli
     <div class="step"><div class="sn">2</div><div class="sc"><h3>📧 Get your licence</h3><p>We issue your profile and licence file and send them to your email.</p></div></div>
     <div class="step"><div class="sn">3</div><div class="sc"><h3>🚀 Run the app</h3><p>Put these in one folder and start the app. Set your own passwords inside it.</p><div class="chips"><code>App.exe</code><code>profiles.enc</code><code>license.key</code></div></div></div>
   </div>
+</section>
+
+<section id="pricing">
+  <div class="shd"><span class="eyebrow">Pricing</span><h2>Simple plans. Pick one to subscribe.</h2></div>
+  <p class="sub" style="margin:0">Choose a plan below. Payment details will open in a pop-up.</p>
+  <div class="plans" id="plans" role="group" aria-label="Pricing plans"></div>
+  <div class="incw"><h3>Every plan includes the full app</h3><div class="inc" id="inc"></div></div>
+
+  <dialog id="pay" aria-label="Payment details"><button class="dx" id="payx" type="button" aria-label="Close">&#10005;</button>
+    <div class="sel"><span>Selected plan: <b id="spn"></b></span><span>Amount to transfer: <b id="spa"></b></span></div>
+    <h2>How to subscribe</h2>
+    <div class="pgrid">
+      <div>
+        <p style="margin:0"><b>1. Choose payment method</b></p>
+        <div class="methods" id="methods" role="group" aria-label="Payment method"></div>
+        <div class="qrbox">
+          <img id="qr" alt="" width="220" height="220">
+          <p class="nq" id="nq">QR code coming soon. Please use the account details below.</p>
+          <ul class="acct" id="acct"></ul>
+        </div>
+      </div>
+      <ol class="how" start="2">
+        <li><p><b>Transfer the amount</b> shown above using the selected method (scan the QR code or use the account details).</p></li>
+        <li><p><b>Submit your proof.</b> After transfer, fill in the form with your email, Transaction ID and transfer screenshot.</p></li>
+        <li><p><b>Get activated.</b> Our support team will activate your account after verification.</p></li>
+      </ol>
+      <div id="pfw"></div>
+    </div>
+  </dialog>
 </section>
 
 <section id="faq">
@@ -255,7 +628,7 @@ input[type=email],input[type=text]{width:100%;padding:.65em .8em;border:1px soli
       </div>
       <nav aria-label="Footer">
         <h4>Explore</h4>
-        <a href="#features">Features</a><a href="#tutorials">Tutorials</a><a href="#start">Get started</a><a href="#faq">FAQ</a>
+        <a href="#features">Features</a><a href="#tutorials">Tutorials</a><a href="#start">Get started</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a>
       </nav>
       <div>
         <h4>Contact</h4>
@@ -270,15 +643,23 @@ input[type=email],input[type=text]{width:100%;padding:.65em .8em;border:1px soli
 <dialog id="dlg">
   <button class="dx" id="dx" type="button" aria-label="Close">&#10005;</button>
   <form id="f" novalidate>
-    <h2>Get the download link</h2>
+    <h2>Get the download App</h2>
     <p class="sub">We use these details only to issue your profile and licence.</p>
-    <label for="g">Email address</label>
-    <input id="g" name="email" type="email" autocomplete="email" placeholder="name@example.com" required>
-    <label for="w"><span class="g">WeBOC</span> ID</label>
-    <input id="w" name="weboc_id" type="text" autocomplete="off" placeholder="Leave blank if you don't have one">
-    <label for="p"><span class="g">PSW</span> ID</label>
-    <input id="p" name="psw_id" type="text" autocomplete="off" placeholder="Leave blank if you don't have one">
-    <p class="sub" style="margin:10px 0 0">Enter at least one ID. <b>Do not enter passwords.</b></p>
+    <div class="dg">
+      <div><label for="g">Email address</label>
+      <input id="g" name="email" type="email" autocomplete="email" placeholder="name@example.com" required></div>
+      <div><label for="co">Company name</label>
+      <input id="co" name="company" type="text" autocomplete="organization" maxlength="100" required></div>
+      <div><label for="cp">Contact person</label>
+      <input id="cp" name="contact_person" type="text" autocomplete="name" maxlength="80" required></div>
+      <div><label for="cn">Contact number</label>
+      <input id="cn" name="contact_number" type="text" inputmode="tel" autocomplete="tel" placeholder="03XX-XXXXXXX" maxlength="20" required></div>
+      <div><label for="w"><span class="g">WeBOC</span> ID</label>
+      <input id="w" name="weboc_id" type="text" autocomplete="off" maxlength="12" placeholder="TR-0-0123456 or CA-0-1234567"></div>
+      <div><label for="p"><span class="g">PSW</span> ID</label>
+      <input id="p" name="psw_id" type="text" autocomplete="off" maxlength="13" placeholder="UN-00-0123396"></div>
+    </div>
+    <p class="sub" style="margin:10px 0 0">Enter at least one ID (leave the other blank). <b>Do not enter passwords.</b></p>
     <label class="chk"><input id="c" type="checkbox" required> I agree you may store these details to issue my licence.</label>
     <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
     <p id="msg" role="status"></p>
@@ -297,15 +678,22 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz50gBP4XEo2-mrKfJjk
 const $ = id => document.getElementById(id), dlg = $("dlg"), f = $("f"), msg = $("msg"), go = $("go");
 const say = (t, bad) => { msg.textContent = t; msg.className = bad ? "bad" : "ok"; };
 
-$("dl").onclick = $("dl2").onclick = () => { say(""); dlg.showModal(); };
+$("dl").onclick = $("dl2").onclick = $("dl3").onclick = $("dl4").onclick = () => { say(""); dlg.showModal(); };
 $("x").onclick = $("dx").onclick = () => dlg.close();
+$("w").oninput = $("p").oninput = e => { e.target.value = e.target.value.toUpperCase().replace(/\s/g, ""); };
 
 f.onsubmit = async e => {
   e.preventDefault();
   const d = Object.fromEntries(new FormData(f));
-  d.weboc_id = d.weboc_id.trim(); d.psw_id = d.psw_id.trim(); d.email = d.email.trim().toLowerCase();
+  d.weboc_id = d.weboc_id.trim().toUpperCase(); d.psw_id = d.psw_id.trim().toUpperCase(); d.email = d.email.trim().toLowerCase();
+  d.company = d.company.trim(); d.contact_person = d.contact_person.trim(); d.contact_number = d.contact_number.trim();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) return say("Enter a valid email address.", 1);
+  if (!d.company) return say("Enter your company name.", 1);
+  if (!d.contact_person) return say("Enter the contact person's name.", 1);
+  if (!/^\+?[\d\s-]+$/.test(d.contact_number) || d.contact_number.replace(/\D/g, "").length < 10) return say("Enter a valid contact number (at least 10 digits).", 1);
   if (!d.weboc_id && !d.psw_id) return say("Enter at least one ID: WeBOC or PSW.", 1);
+  if (d.weboc_id && !/^(TR|CA)-\d-\d{7}$/.test(d.weboc_id)) return say("WeBOC ID format: TR-0-0123456 or CA-0-1234567.", 1);
+  if (d.psw_id && !/^UN-\d{2}-\d{7}$/.test(d.psw_id)) return say("PSW ID format: UN-00-0123396.", 1);
   if (!$("c").checked) return say("Please tick the agreement box.", 1);
   go.disabled = true; say("Saving...");
   try {
@@ -428,6 +816,185 @@ f.onsubmit = async e => {
   };
   if (mq.addEventListener) mq.addEventListener("change", paint);
   paint();
+})();
+</script>
+<script>
+/* ===== PRICING: edit this block only ===== */
+var ICON = {
+  bolt:'<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>',
+  cal:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  star:'<path d="m12 2 3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/>',
+  gem:'<path d="M6 3h12l4 6-10 13L2 9z"/><path d="M11 3 8 9l4 13 4-13-3-6M2 9h20"/>'
+};
+var INCLUDED = [
+  {t:"WeBOC & PSW automation", c:"#f97316", i:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/>'},
+  {t:"GD data straight into Excel", c:"#2563eb", i:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/>'},
+  {t:"GD PDFs merged in one file", c:"#7c3aed", i:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/>'},
+  {t:"EFS balance tracking", c:"#059669", i:'<rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20M16 15h2"/>'},
+  {t:"Encrypted, stays on your PC", c:"#dc2626", i:'<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'},
+  {t:"Auto backups, resumable runs", c:"#0891b2", i:'<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>'}
+];
+var PLANS = [
+  {id:"launch", name:"Limited Time Special Launch Offer", title:"Special Launch Offer", tag:"Best price to get started",
+   price:5000,  total:5000,  reg:10000, label:"Billed monthly", off:"50% OFF", badge:"Limited time", icon:"bolt",
+   best:"Getting started", save:"Save Rs. 5,000 every month",
+   pts:["Half the regular price","Free live demo","Limited-time only"],
+   c1:"#ff8a00", c2:"#e11d48"},
+  {id:"m1", name:"Subscription Monthly", title:"Monthly", tag:"Flexible, pay month to month",
+   price:10000, total:10000, label:"Billed monthly", icon:"cal",
+   best:"Short-term needs", save:"No commitment",
+   pts:["Pay month to month","Stop whenever you like","Full access, day one"],
+   c1:"#3b82f6", c2:"#1d4ed8"},
+  {id:"m6", name:"Subscription 6 Months", title:"6 Months", tag:"Save more with 6 months",
+   price:8500,  total:51000, reg:10000, label:"Billed Rs. 51,000 for 6 months", off:"15% OFF", icon:"star",
+   best:"Regular importers", save:"Save Rs. 9,000 in total",
+   pts:["Save Rs. 1,500/month","Pay once, 6 months","Fewer renewals"],
+   c1:"#8b5cf6", c2:"#6d28d9"},
+  {id:"y1", name:"Subscription Yearly", title:"Yearly", tag:"Lowest monthly cost",
+   price:7000,  total:84000, reg:10000, label:"Billed Rs. 84,000 for 12 months", off:"30% OFF", badge:"Best value", icon:"gem",
+   best:"Clearing agents", save:"Save Rs. 36,000 in total",
+   pts:["Save Rs. 3,000/month","Pay once, 12 months","Lowest rate per month"],
+   c1:"#10b981", c2:"#047857"}
+];
+var METHODS = [
+  {id:"jazz", name:"JazzCash",      qr:"qr-jazzcash.png",  info:[["Account title","Muhammad Adnan"],["JazzCash number","0321-2121147"]]},
+  {id:"easy", name:"EasyPaisa",     qr:"qr-easypaisa.png", info:[["Account title","Muhammad Adnan"],["EasyPaisa number","0321-2121147"]]},
+  {id:"bank", name:"Bank Transfer", qr:"qr-bank.png",      info:[["Bank","Bank AL Habib"],["Account title","Muhammad Adnan"],["Account no.","1001-0081-156088-01-4"],["IBAN","PK26 BAHL 1001 0081 1560 8801"]]}
+];
+/* ========================================= */
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  var money=function(n){return "Rs. "+n.toLocaleString("en-PK")};
+  var plan=null, meth=METHODS[0];
+  $("payx").onclick=function(){ $("pay").close() };
+  $("pay").addEventListener("click",function(e){ if(e.target===this) this.close() });
+
+  var box=$("plans");
+  var CHK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4 10-10"/></svg>';
+  PLANS.forEach(function(p){
+    var d=document.createElement("article");
+    d.className="pc"; d.dataset.id=p.id;
+    d.style.setProperty("--c1",p.c1); d.style.setProperty("--c2",p.c2);
+    d.innerHTML=
+      '<div class="ph">'+(p.badge?'<span class="bd">'+p.badge+'</span>':'')+
+        '<div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true">'+ICON[p.icon]+'</svg></div>'+
+        '<h3></h3><p class="tg"></p></div>'+
+      '<div class="pb">'+
+        '<div class="bf"><span>Best for</span><b></b></div>'+
+        '<div class="prow"><span class="pr"><span class="cur">Rs.</span>'+p.price.toLocaleString("en-PK")+'</span><span class="per">/month</span></div>'+
+        '<div class="sv">'+(p.reg?'<s>'+money(p.reg)+'</s> <b>'+p.off+'</b>':'<span class="reg">Regular price</span>')+'</div>'+
+        '<div class="bl"></div>'+
+        '<div class="sb"><span class="sbi">&#10022;</span><span class="sbt"></span></div>'+
+        '<div class="dy">About <b>Rs. '+Math.round(p.price/30).toLocaleString("en-PK")+'</b> per day</div>'+
+        '<ul class="ft">'+p.pts.map(function(){return '<li>'+CHK+'<span></span></li>'}).join("")+'</ul>'+
+        '<button type="button" class="cta" aria-pressed="false">Select plan</button>'+
+      '</div>';
+    d.querySelector("h3").textContent=p.title;
+    d.querySelector(".tg").textContent=p.tag;
+    d.querySelector(".bf b").textContent=p.best;
+    d.querySelector(".bl").textContent=p.label;
+    d.querySelector(".sbt").textContent=p.save;
+    var items=d.querySelectorAll(".ft span");
+    for(var i=0;i<items.length;i++) items[i].textContent=p.pts[i];
+    d.onclick=function(){ choose(p) };
+    box.appendChild(d);
+  });
+
+  var inc=$("inc");
+  INCLUDED.forEach(function(x){
+    var e=document.createElement("div"); e.className="ci"; e.style.setProperty("--c",x.c);
+    e.innerHTML='<span class="cic"><svg viewBox="0 0 24 24" aria-hidden="true">'+x.i+'</svg></span><span></span>';
+    e.lastChild.textContent=x.t; inc.appendChild(e);
+  });
+
+  var mbox=$("methods");
+  METHODS.forEach(function(m){
+    var b=document.createElement("button");
+    b.type="button"; b.className="mth"; b.textContent=m.name; b.setAttribute("aria-pressed","false"); b.dataset.id=m.id;
+    b.onclick=function(){ meth=m; showMethod() };
+    mbox.appendChild(b);
+  });
+
+  function showMethod(){
+    [].forEach.call(mbox.children,function(b){ b.setAttribute("aria-pressed", b.dataset.id===meth.id) });
+    var img=$("qr"); img.style.display=""; $("nq").style.display="none";
+    img.onerror=function(){ img.style.display="none"; $("nq").style.display="block" };
+    img.alt=meth.name+" QR code"; img.src=meth.qr;
+    var ul=$("acct"); ul.innerHTML="";
+    meth.info.concat([["Amount",money(plan.total)]]).forEach(function(r){
+      var li=document.createElement("li"), a=document.createElement("span"), v=document.createElement("span");
+      a.textContent=r[0]; v.textContent=r[1]; li.appendChild(a); li.appendChild(v); ul.appendChild(li);
+    });
+  }
+
+
+  var FORM_HTML =
+    '<div class="pfw"><h3>Submit payment details</h3>'+
+    '<p class="sub" style="margin:0">Use the same email you used to download the app.</p>'+
+    '<form id="pf" novalidate><div class="pfg">'+
+    '<div><label for="pe">Email</label><input id="pe" name="email" type="email" autocomplete="email" placeholder="name@example.com" required></div>'+
+    '<div><label for="pn">Name / Company</label><input id="pn" name="name" type="text" autocomplete="organization" required></div>'+
+    '<div><label for="pt">Transaction ID</label><input id="pt" name="txn" type="text" autocomplete="off" required></div>'+
+    '<div><label for="ps">Transfer screenshot (image)</label><input id="ps" name="shot" type="file" accept="image/*" required></div>'+
+    '<input class="hp" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">'+
+    '</div><p id="pmsg" role="status"></p>'+
+    '<div class="row"><button class="btn" id="pgo" type="submit">Submit payment details</button></div></form></div>';
+
+  function shrink(file){
+    return new Promise(function(ok,no){
+      if(!/^image\//.test(file.type)) return no(new Error("Please attach the screenshot as an image (JPG or PNG)."));
+      var img=new Image(), u=URL.createObjectURL(file);
+      img.onload=function(){
+        var k=Math.min(1,1400/Math.max(img.width,img.height)), c=document.createElement("canvas");
+        c.width=Math.round(img.width*k); c.height=Math.round(img.height*k);
+        c.getContext("2d").drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(u);
+        ok(c.toDataURL("image/jpeg",0.72).split(",")[1]);
+      };
+      img.onerror=function(){ no(new Error("Could not read the image.")) };
+      img.src=u;
+    });
+  }
+
+  function renderForm(){
+    $("pfw").innerHTML=FORM_HTML;
+    var f=$("pf"), say=function(t,bad){ var m=$("pmsg"); m.textContent=t; m.className=bad?"bad":"ok" };
+    f.onsubmit=async function(e){
+      e.preventDefault();
+      var email=f.email.value.trim().toLowerCase(), name=f.name.value.trim(), txn=f.txn.value.trim(), file=f.shot.files[0];
+      if(f.website.value) return;
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return say("Enter a valid email address.",1);
+      if(!name) return say("Enter your name or company.",1);
+      if(txn.length<4) return say("Enter the Transaction ID.",1);
+      if(!file) return say("Attach the transfer screenshot.",1);
+      $("pgo").disabled=true; say("Uploading... please wait.");
+      try{
+        var img=await shrink(file), ctl=new AbortController(), t=setTimeout(function(){ctl.abort()},45000);
+        var res=await fetch(SCRIPT_URL,{method:"POST",signal:ctl.signal,body:JSON.stringify({
+          action:"payment", email:email, name:name, txn:txn, plan:plan.name, method:meth.name, amount:plan.total, img:img
+        })});
+        clearTimeout(t);
+        var r=await res.json();
+        if(!r.ok) throw new Error(r.error||"Could not save.");
+        $("pfw").innerHTML='<div class="done"><div class="big">✅</div><h3>Payment details received</h3><p style="margin:0 auto">Our support team will verify your payment and activate your account. If not activated within 24 hours, contact <a href="mailto:automate4results@gmail.com">support</a>.</p></div>';
+      }catch(err){
+        say("Error: "+(err.name==="AbortError"?"Timed out. Please try again.":err.message),1);
+        $("pgo").disabled=false;
+      }
+    };
+  }
+
+  function choose(p){
+    plan=p;
+    [].forEach.call(box.children,function(b){
+      var on=b.dataset.id===p.id; b.classList.toggle("on",on);
+      var c=b.querySelector(".cta"); c.setAttribute("aria-pressed",on); c.textContent=on?"Selected":"Select plan";
+    });
+    $("spn").textContent=p.name;
+    $("spa").textContent=money(p.total);
+    showMethod();
+    renderForm();
+    if(!$("pay").open) $("pay").showModal();
+  }
 })();
 </script>
 </body>
