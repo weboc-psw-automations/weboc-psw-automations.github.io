@@ -416,6 +416,8 @@ input[type=file]{width:100%;padding:.55em .6em;border:1px dashed var(--line);bor
 
 /* ===== NEW: Testimonials carousel ===== */
 .tst{position:relative;margin-top:26px}
+.tst-empty{width:100%;padding:22px;border:1px dashed var(--line);border-radius:12px;color:var(--mute);background:var(--card);text-align:center}
+.tst-nav[hidden],.tst-dots[hidden]{display:none}
 .tst-track{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:4px 2px 18px;scrollbar-width:none}
 .tst-track::-webkit-scrollbar{display:none}
 .tst-card{flex:0 0 calc(33.333% - 12px);scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 12px 28px rgba(8,24,30,.08);display:flex;flex-direction:column;transition:transform .18s,box-shadow .18s}
@@ -468,10 +470,45 @@ input[type=file]{width:100%;padding:.55em .6em;border:1px dashed var(--line);bor
 .stars button:focus-visible{outline:3px solid var(--acc);outline-offset:2px;border-radius:4px}
 .fbm{min-height:1.3em;margin:10px 0 0;font-size:.88rem}
 .fbm.bad{color:var(--bad)}.fbm.ok{color:var(--ok)}
+
+/* ---- Responsive navigation menu ---- */
+.menu-toggle{display:none;width:40px;height:40px;padding:9px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--ink);cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px}
+.menu-toggle span{display:block;width:19px;height:2px;border-radius:2px;background:currentColor;transition:transform .2s,opacity .2s}
+.menu-toggle:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.menu-toggle[aria-expanded="true"] span:first-child{transform:translateY(7px) rotate(45deg)}
+.menu-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.menu-toggle[aria-expanded="true"] span:last-child{transform:translateY(-7px) rotate(-45deg)}
+@media (max-width:760px){
+  header .w{position:relative;gap:10px}
+  .hr{gap:9px}
+  .menu-toggle{display:flex}
+  header nav{display:none;position:absolute;top:calc(100% + 14px);left:20px;right:20px;z-index:60;flex-direction:column;align-items:stretch;gap:0;padding:8px;border:1px solid var(--line);border-radius:12px;background:var(--card);box-shadow:0 14px 32px rgba(8,24,30,.18)}
+  header nav.is-open{display:flex}
+  header nav a{display:block;padding:11px 13px;border-radius:7px;text-decoration:none}
+  header nav a:hover,header nav a:focus-visible{background:var(--bg);color:var(--acc)}
+}
+
 </style>
 </head>
 <body id="top">
-<header><div class="w"><span class="logo">WeBOC / PSW Automations</span><div class="hr"><nav><a href="#tutorials" class="sub">Tutorials</a><a href="#pricing" class="sub">Pricing</a><a href="#testimonials" class="sub">Testimonials</a><a href="#team" class="sub">Team</a><a href="#faq" class="sub">FAQ</a></nav><button class="tt" id="tt" type="button" aria-label="Switch theme"></button></div></div></header>
+<header>
+  <div class="w">
+    <span class="logo">WeBOC / PSW Automations</span>
+    <div class="hr">
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open navigation menu" aria-controls="mainNav" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="mainNav" aria-label="Main navigation">
+        <a href="#tutorials" class="sub">Tutorials</a>
+        <a href="#pricing" class="sub">Pricing</a>
+        <a href="#testimonials" class="sub">Testimonials</a>
+        <a href="#team" class="sub">Team</a>
+        <a href="#faq" class="sub">FAQ</a>
+      </nav>
+      <button class="tt" id="tt" type="button" aria-label="Switch theme"></button>
+    </div>
+  </div>
+</header>
 
 <main class="w">
 <div class="hero">
@@ -675,7 +712,7 @@ input[type=file]{width:100%;padding:.55em .6em;border:1px dashed var(--line);bor
 <!-- ===== NEW: TESTIMONIALS ===== -->
 <section id="testimonials">
   <div class="shd"><span class="eyebrow">Testimonials</span><h2>What our users say</h2></div>
-  <p class="sub" style="margin:0">Real feedback from people who use the app every day.</p>
+  <p class="sub" style="margin:0">Approved feedback from app users appears here.</p>
 
   <div class="tst">
     <div class="tst-track" id="tstTrack" aria-label="Testimonials carousel" role="region"></div>
@@ -779,15 +816,24 @@ f.onsubmit = async e => {
   if (!$("c").checked) return say("Please tick the agreement box.", 1);
   go.disabled = true; say("Saving...");
   try {
-    const cb = "cb" + Date.now(), s = document.createElement("script");
     const r = await new Promise((ok, no) => {
-    window[cb] = ok;
-    s.onerror = () => no(new Error("Could not reach server"));
-    s.src = SCRIPT_URL + "?" + new URLSearchParams({ ...d, cb });
-    document.body.appendChild(s);
-    setTimeout(() => no(new Error("Timed out")), 15000);
-  });
-    if (!r.ok) throw new Error(r.error || "Could not save.");
+      const cb = "reg_cb_" + Date.now() + "_" + Math.floor(Math.random() * 100000);
+      const script = document.createElement("script");
+      let settled = false;
+      const timer = setTimeout(() => finish(new Error("The server did not respond in time. Please try again.")), 20000);
+      function finish(err, data) {
+        if (settled) return;
+        settled = true; clearTimeout(timer);
+        try { delete window[cb]; } catch (_) { window[cb] = undefined; }
+        script.remove();
+        if (err) no(err); else ok(data);
+      }
+      window[cb] = data => finish(null, data);
+      script.onerror = () => finish(new Error("Could not reach the server. Check your connection and try again."));
+      script.src = SCRIPT_URL + "?" + new URLSearchParams({ ...d, cb });
+      document.body.appendChild(script);
+    });
+    if (!r || !r.ok) throw new Error((r && r.error) || "The server could not confirm your registration. Please try again.");
     const esc = u => encodeURI(u).replace(/&/g, "&amp;");
     f.innerHTML = '<h2>Thank you</h2><p>Your details are saved. Your download is ready.</p>' +
       '<p class="sub">Your Licence &amp; Profile Details will be shared with your email ID.<br>If not received within 24 hours, you may contact with <a href="mailto:automate4results@gmail.com">support team</a>.</p>' +
@@ -1015,24 +1061,28 @@ var METHODS = [
     '<p class="sub" style="margin:0">Use the same email you used to download the app.</p>'+
     '<form id="pf" novalidate><div class="pfg">'+
     '<div><label for="pe">Email</label><input id="pe" name="email" type="email" autocomplete="email" placeholder="name@example.com" required></div>'+
-    '<div><label for="pn">Name / Company</label><input id="pn" name="name" type="text" autocomplete="organization" required></div>'+
-    '<div><label for="pt">Transaction ID</label><input id="pt" name="txn" type="text" autocomplete="off" required></div>'+
-    '<div><label for="ps">Transfer screenshot (image)</label><input id="ps" name="shot" type="file" accept="image/*" required></div>'+
+    '<div><label for="pn">Name / Company</label><input id="pn" name="name" type="text" autocomplete="organization" maxlength="120" required></div>'+
+    '<div><label for="pt">Transaction ID</label><input id="pt" name="txn" type="text" autocomplete="off" maxlength="100" required></div>'+
+    '<div><label for="ps">Transfer screenshot (image)</label><input id="ps" name="shot" type="file" accept="image/jpeg,image/png,image/webp" required></div>'+
     '<input class="hp" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">'+
     '</div><p id="pmsg" role="status"></p>'+
     '<div class="row"><button class="btn" id="pgo" type="submit">Submit payment details</button></div></form></div>';
 
   function shrink(file){
     return new Promise(function(ok,no){
-      if(!/^image\//.test(file.type)) return no(new Error("Please attach the screenshot as an image (JPG or PNG)."));
+      if(!file || !["image/jpeg","image/png","image/webp"].includes(file.type)) return no(new Error("Please attach a JPG, PNG or WebP screenshot."));
+      if(file.size>8*1024*1024) return no(new Error("Screenshot is larger than 8 MB. Please choose a smaller image."));
       var img=new Image(), u=URL.createObjectURL(file);
       img.onload=function(){
-        var k=Math.min(1,1400/Math.max(img.width,img.height)), c=document.createElement("canvas");
-        c.width=Math.round(img.width*k); c.height=Math.round(img.height*k);
-        c.getContext("2d").drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(u);
-        ok(c.toDataURL("image/jpeg",0.72).split(",")[1]);
+        try{
+          var k=Math.min(1,1400/Math.max(img.width,img.height)), c=document.createElement("canvas");
+          c.width=Math.max(1,Math.round(img.width*k)); c.height=Math.max(1,Math.round(img.height*k));
+          var ctx=c.getContext("2d"); if(!ctx) throw new Error("Your browser could not process this image.");
+          ctx.drawImage(img,0,0,c.width,c.height);
+          var encoded=c.toDataURL("image/jpeg",0.72).split(",")[1]; URL.revokeObjectURL(u); ok(encoded);
+        }catch(err){URL.revokeObjectURL(u);no(err)}
       };
-      img.onerror=function(){ no(new Error("Could not read the image.")) };
+      img.onerror=function(){URL.revokeObjectURL(u);no(new Error("Could not read the image. Please select another screenshot."))};
       img.src=u;
     });
   }
@@ -1049,19 +1099,20 @@ var METHODS = [
       if(txn.length<4) return say("Enter the Transaction ID.",1);
       if(!file) return say("Attach the transfer screenshot.",1);
       $("pgo").disabled=true; say("Uploading... please wait.");
+      var ctl=new AbortController(), timer;
       try{
-        var img=await shrink(file), ctl=new AbortController(), t=setTimeout(function(){ctl.abort()},45000);
+        var img=await shrink(file); timer=setTimeout(function(){ctl.abort()},45000);
         var res=await fetch(SCRIPT_URL,{method:"POST",signal:ctl.signal,body:JSON.stringify({
           action:"payment", email:email, name:name, txn:txn, plan:plan.name, method:meth.name, amount:plan.total, img:img
         })});
-        clearTimeout(t);
-        var r=await res.json();
-        if(!r.ok) throw new Error(r.error||"Could not save.");
+        if(!res.ok) throw new Error("The payment service returned an error ("+res.status+"). Please try again.");
+        var r; try{r=await res.json()}catch(_){throw new Error("The server response could not be read. Please contact support before submitting again.")}
+        if(!r || !r.ok) throw new Error((r&&r.error)||"The server could not confirm your payment submission.");
         $("pfw").innerHTML='<div class="done"><div class="big">✅</div><h3>Payment details received</h3><p style="margin:0 auto">Our support team will verify your payment and activate your account. If not activated within 24 hours, contact <a href="mailto:automate4results@gmail.com">support</a>.</p></div>';
       }catch(err){
-        say("Error: "+(err.name==="AbortError"?"Timed out. Please try again.":err.message),1);
+        say("Error: "+(err.name==="AbortError"?"The request timed out. Check your connection and contact support before submitting again.":err.message),1);
         $("pgo").disabled=false;
-      }
+      }finally{if(timer)clearTimeout(timer)}
     };
   }
 
@@ -1156,19 +1207,29 @@ var TEAM = [
     card.querySelector(".tst-av").style.setProperty("--c1",t.c1);
     card.querySelector(".tst-av").style.setProperty("--c2",t.c2);
     track.appendChild(card);
-    var d=document.createElement("i"); dots.appendChild(d);
   }
   TESTIMONIALS.forEach(addT);
+  var nav=track.parentElement.querySelector(".tst-nav");
+  function renderEmptyState(){
+    track.innerHTML='<div class="tst-empty">No approved reviews yet. Be among the first users to share your experience.</div>';
+    nav.hidden=true; dots.hidden=true;
+  }
+  if(!TESTIMONIALS.length) renderEmptyState();
   var PAL=[["#f97316","#e11d48"],["#3b82f6","#1d4ed8"],["#8b5cf6","#6d28d9"],["#10b981","#047857"],["#0891b2","#0e7490"]];
   /* real reviews from the sheet replace the built-in sample cards (the samples stay only if the sheet has none) */
   window.__setReviews=function(items){
     TESTIMONIALS.length=0; track.innerHTML=""; dots.innerHTML="";
-    items.forEach(function(it,i){
+    var safeItems=Array.isArray(items)?items.filter(function(it){
+      return it && typeof it.comment==="string" && it.comment.trim() && typeof it.name==="string" && it.name.trim();
+    }).slice(0,30):[];
+    safeItems.forEach(function(it,i){
       var c=PAL[i%PAL.length];
-      var t={quote:it.comment,name:it.name,role:it.company||"Verified user",stars:it.rating,c1:c[0],c2:c[1]};
+      var t={quote:it.comment.trim(),name:it.name.trim(),role:(typeof it.company==="string"&&it.company.trim())?it.company.trim():"Verified user",stars:it.rating,c1:c[0],c2:c[1]};
       TESTIMONIALS.push(t); addT(t);
     });
-    track.scrollLeft=0; paintDots();
+    track.scrollLeft=0;
+    if(!TESTIMONIALS.length){renderEmptyState();return;}
+    nav.hidden=false; dots.hidden=false; paintDots();
   };
 
 
@@ -1181,8 +1242,17 @@ var TEAM = [
     return Math.round(track.scrollLeft/w);
   }
   function paintDots(){
-    var n=pageCount(), cur=currentPage();
-    [].forEach.call(dots.children,function(d,i){ d.classList.toggle("on", i===cur) });
+    var n=pageCount(), cur=Math.min(currentPage(),Math.max(0,n-1));
+    dots.innerHTML="";
+    for(var i=0;i<n;i++){
+      var d=document.createElement("button");
+      d.type="button"; d.setAttribute("aria-label","Go to testimonial page "+(i+1));
+      d.setAttribute("aria-current",i===cur?"true":"false");
+      d.style.cssText="width:9px;height:9px;padding:0;border:0;border-radius:50%;background:"+(i===cur?"var(--acc)":"var(--line)")+";cursor:pointer";
+      (function(page){d.addEventListener("click",function(){track.scrollTo({left:page*track.clientWidth,behavior:"smooth"})})})(i);
+      dots.appendChild(d);
+    }
+    nav.hidden=n<=1; dots.hidden=n<=1;
   }
   function go(dir){
     var w=track.clientWidth;
@@ -1298,5 +1368,32 @@ var TEAM = [
   }).catch(function(){});
 })();
 </script>
+
+<script>
+/* Accessible responsive navigation */
+(function(){
+  var toggle=document.getElementById('menuToggle');
+  var nav=document.getElementById('mainNav');
+  if(!toggle||!nav) return;
+  function closeMenu(){
+    nav.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded','false');
+    toggle.setAttribute('aria-label','Open navigation menu');
+  }
+  toggle.addEventListener('click',function(){
+    var opening=toggle.getAttribute('aria-expanded')!=='true';
+    toggle.setAttribute('aria-expanded',String(opening));
+    toggle.setAttribute('aria-label',opening?'Close navigation menu':'Open navigation menu');
+    nav.classList.toggle('is-open',opening);
+  });
+  nav.querySelectorAll('a').forEach(function(link){link.addEventListener('click',closeMenu);});
+  document.addEventListener('keydown',function(event){if(event.key==='Escape'&&toggle.getAttribute('aria-expanded')==='true'){closeMenu();toggle.focus();}});
+  window.addEventListener('resize',function(){if(window.innerWidth>760) closeMenu();});
+  document.addEventListener('click',function(event){
+    if(window.innerWidth<=760&&!nav.contains(event.target)&&!toggle.contains(event.target)) closeMenu();
+  });
+})();
+</script>
+
 </body>
 </html>
