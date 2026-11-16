@@ -525,10 +525,38 @@ var TEAM = [
     $("fbgo2").disabled=false;
   };
 
-  /* load approved reviews from the sheet */
-  jp({action:"fb_list"}).then(function(r){
-    if(r&&r.ok&&r.items&&r.items.length&&window.__setReviews) window.__setReviews(r.items);
-  }).catch(function(){});
+
+/* Automatically refresh approved testimonials */
+var lastReviews = "";
+
+function loadReviews() {
+  jp({ action: "fb_list", refresh: Date.now() })
+    .then(function(r) {
+      if (!r || !r.ok || !Array.isArray(r.items)) return;
+
+      var signature = JSON.stringify(r.items);
+
+      if (signature !== lastReviews && window.__setReviews) {
+        lastReviews = signature;
+        window.__setReviews(r.items);
+      }
+    })
+    .catch(function(err) {
+      console.warn("Testimonials refresh failed:", err);
+    });
+}
+
+// Initial load
+loadReviews();
+
+// Refresh every 30 seconds
+var testimonialRefresh = setInterval(loadReviews, 30000);
+
+// Refresh immediately when visitor returns to the tab
+document.addEventListener("visibilitychange", function() {
+  if (!document.hidden) loadReviews();
+});
+
 })();
 
 /* ===== Original inline script 7 (preserved in original execution order) ===== */
