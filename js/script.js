@@ -68,7 +68,7 @@ f.onsubmit = async e => {
    Each video must be shared as "Anyone with the link: Viewer". Leave id empty to show "coming soon". */
 (function () {
   const VIDEOS = [
-    { id: "", title: "App Installation", desc: "Application Installation and Setup." },
+    { id: "1DSKfvzRT3feIyjuNb3KbSHZRzlMn8PKU", title: "App Installation Setup", desc: "Application Installation and Setup." },
     { id: "1Jtze3e8HpY97G1HdBP5sQzL8Oiuxj9HK", title: "App Features", desc: "A quick tour of everything the application features." },
     { id: "1XzjFAwnhJkg6XRoarw8M9ueu4Y5REacN", title: "Login PSW / WeBOC", desc: "How to sign in to PSW/WeBOC from the App." },
     { id: "18ezIUr9K50K5BSHvo8LZIxvYc6BTiDgT", title: "Fetch GDs List", desc: "Pick Import or Export, choose a date range or month and fetch List of GDs." },
