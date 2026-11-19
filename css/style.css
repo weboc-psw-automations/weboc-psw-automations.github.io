@@ -252,7 +252,7 @@ input[type=file]{width:100%;padding:.55em .6em;border:1px dashed var(--line);bor
 .pc .bf span{color:var(--mute);text-transform:uppercase;letter-spacing:.05em;font-weight:700}
 .pc .bf b{background:color-mix(in srgb,var(--c1) 14%,transparent);color:var(--c1);padding:3px 9px;border-radius:999px;line-height:1.3}
 .pc .bf{flex-direction:column;align-items:flex-start;gap:5px}
-.pc .bl{min-height:calc(3em + 0px);border-bottom:0;padding-bottom:0;margin-bottom:10px}
+.pc .bl{min-height:4.4em;border-bottom:0;padding-bottom:0;margin-bottom:10px}
 .pc .sb{min-height:calc(2.5em + 22px);display:flex;gap:10px;align-items:center;padding:11px 12px;border-radius:10px;color:#fff;font-weight:700;font-size:.9rem;line-height:1.25;background:linear-gradient(135deg,var(--c1),var(--c2))}
 .pc .sbi{flex:none;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.22);display:grid;place-items:center;font-size:.9rem}
 .pc .dy{margin:10px 0 14px;padding-bottom:14px;border-bottom:1px solid var(--line);font-size:.85rem;color:var(--mute)}
@@ -475,3 +475,8 @@ input[type=file]{width:100%;padding:.55em .6em;border:1px dashed var(--line);bor
   header nav a{display:block;padding:11px 13px;border-radius:7px;text-decoration:none}
   header nav a:hover,header nav a:focus-visible{background:var(--bg);color:var(--acc)}
 }
+
+/* launch offer: minimum 6-month term notes */
+.pc .bl .mn{display:block;margin-top:3px;font-size:.74rem;font-weight:700;color:var(--c1);line-height:1.35}
+.pmin{margin-top:8px;font-size:.76rem;opacity:.92}
+.ob-note{margin:12px 0 0;font-size:.76rem;opacity:.88;max-width:none}

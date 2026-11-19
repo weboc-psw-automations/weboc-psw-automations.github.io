@@ -173,9 +173,9 @@ var INCLUDED = [
 ];
 var PLANS = [
   {id:"launch", name:"Limited Time Special Launch Offer", title:"Special Launch Offer", tag:"Best price to get started",
-   price:5000,  total:5000,  reg:10000, label:"Billed monthly", off:"50% OFF", badge:"Limited time", icon:"bolt",
-   best:"Getting started", save:"Save Rs. 5,000 every month",
-   pts:["Half the regular price","Free live demo","Limited-time only"],
+   price:5000,  months:6, total:5000*6, reg:10000, label:"Billed Rs. 30,000 for 6 months", min:"Minimum 6 months, fixed term", off:"50% OFF", badge:"Limited time", icon:"bolt",
+   best:"Getting started", save:"Save Rs. 30,000 over 6 months",
+   pts:["Half the regular price","Free live demo","Fixed 6-month term"],
    c1:"#ff8a00", c2:"#e11d48"},
   {id:"m1", name:"Subscription Monthly", title:"Monthly", tag:"Flexible, pay month to month",
    price:10000, total:10000, label:"Billed monthly", icon:"cal",
@@ -202,6 +202,7 @@ var METHODS = [
 (function(){
   var $=function(i){return document.getElementById(i)};
   var money=function(n){return "Rs. "+n.toLocaleString("en-PK")};
+  var amt=function(p){return money(p.total)+(p.min?" ("+p.months+" months)":"")};
   var plan=null, meth=METHODS[0];
   $("payx").onclick=function(){ $("pay").close() };
   $("pay").addEventListener("click",function(e){ if(e.target===this) this.close() });
@@ -229,7 +230,8 @@ var METHODS = [
     d.querySelector("h3").textContent=p.title;
     d.querySelector(".tg").textContent=p.tag;
     d.querySelector(".bf b").textContent=p.best;
-    d.querySelector(".bl").textContent=p.label;
+    var bl=d.querySelector(".bl"); bl.textContent=p.label;
+    if(p.min){ var mn=document.createElement("small"); mn.className="mn"; mn.textContent="\u23F1 "+p.min; bl.appendChild(mn) }
     d.querySelector(".sbt").textContent=p.save;
     var items=d.querySelectorAll(".ft span");
     for(var i=0;i<items.length;i++) items[i].textContent=p.pts[i];
@@ -258,7 +260,7 @@ var METHODS = [
     img.onerror=function(){ img.style.display="none"; $("nq").style.display="block" };
     img.alt=meth.name+" QR code"; img.src=meth.qr;
     var ul=$("acct"); ul.innerHTML="";
-    meth.info.concat([["Amount",money(plan.total)]]).forEach(function(r){
+    meth.info.concat([["Amount",amt(plan)]]).forEach(function(r){
       var li=document.createElement("li"), a=document.createElement("span"), v=document.createElement("span");
       a.textContent=r[0]; v.textContent=r[1]; li.appendChild(a); li.appendChild(v); ul.appendChild(li);
     });
@@ -331,8 +333,8 @@ var METHODS = [
       var on=b.dataset.id===p.id; b.classList.toggle("on",on);
       var c=b.querySelector(".cta"); c.setAttribute("aria-pressed",on); c.textContent=on?"Selected":"Select plan";
     });
-    $("spn").textContent=p.name;
-    $("spa").textContent=money(p.total);
+    $("spn").textContent=p.name+(p.min?" \u2013 "+p.min.split(",")[0].toLowerCase():"");
+    $("spa").textContent=amt(p);
     showMethod();
     renderForm();
     if(!$("pay").open) $("pay").showModal();
