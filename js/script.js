@@ -194,14 +194,15 @@ var PLANS = [
    c1:"#10b981", c2:"#047857"}
 ];
 var METHODS = [
+  {id:"bank", name:"Bank Transfer", rec:true, qr:"./images/qr-bank.png",      info:[["Bank","Bank AL Habib"],["Account title","Muhammad Adnan"],["Account no.","1001-0081-156088-01-4"],["IBAN","PK26 BAHL 1001 0081 1560 8801"]]},
   {id:"jazz", name:"JazzCash",      qr:"./images/qr-jazzcash.png",  info:[["Account title","Muhammad Adnan"],["JazzCash number","0321-2121147"]]},
-  {id:"easy", name:"EasyPaisa",     qr:"./images/qr-easypaisa.png", info:[["Account title","Muhammad Adnan"],["EasyPaisa number","0321-2121147"]]},
-  {id:"bank", name:"Bank Transfer", qr:"./images/qr-bank.png",      info:[["Bank","Bank AL Habib"],["Account title","Muhammad Adnan"],["Account no.","1001-0081-156088-01-4"],["IBAN","PK26 BAHL 1001 0081 1560 8801"]]}
+  {id:"easy", name:"EasyPaisa", only:["m1"], max:25000,     qr:"./images/qr-easypaisa.png", info:[["Account title","Muhammad Adnan"],["EasyPaisa number","0321-2121147"]]}
 ];
 /* ========================================= */
 (function(){
   var $=function(i){return document.getElementById(i)};
   var money=function(n){return "Rs. "+n.toLocaleString("en-PK")};
+  var ok=function(m,p){return (!m.only||m.only.indexOf(p.id)>-1)&&(!m.max||p.total<=m.max)}; /* is this payment method allowed for this plan? */
   var amt=function(p){return money(p.total)+(p.min?" ("+p.months+" months)":"")};
   var plan=null, meth=METHODS[0];
   $("payx").onclick=function(){ $("pay").close() };
@@ -249,13 +250,20 @@ var METHODS = [
   var mbox=$("methods");
   METHODS.forEach(function(m){
     var b=document.createElement("button");
-    b.type="button"; b.className="mth"; b.textContent=m.name; b.setAttribute("aria-pressed","false"); b.dataset.id=m.id;
+    b.type="button"; b.className="mth"; b.textContent=m.name;
+    if(m.rec){ var rc=document.createElement("small"); rc.className="rc"; rc.textContent="Preferred"; b.appendChild(rc) } b.setAttribute("aria-pressed","false"); b.dataset.id=m.id;
     b.onclick=function(){ meth=m; showMethod() };
     mbox.appendChild(b);
   });
 
   function showMethod(){
-    [].forEach.call(mbox.children,function(b){ b.setAttribute("aria-pressed", b.dataset.id===meth.id) });
+    if(!ok(meth,plan)) meth=METHODS.filter(function(m){return ok(m,plan)})[0];   /* falls back to Bank (first) */
+    [].forEach.call(mbox.children,function(b){
+      var m=METHODS.filter(function(x){return x.id===b.dataset.id})[0];
+      b.hidden=!ok(m,plan);
+      b.setAttribute("aria-pressed", b.dataset.id===meth.id);
+    });
+    $("mnote").textContent="Bank Transfer is preferred."+(METHODS.every(function(m){return ok(m,plan)})?"":" EasyPaisa is available for the Monthly plan only (up to Rs. 25,000).");
     var img=$("qr"); img.style.display=""; $("nq").style.display="none";
     img.onerror=function(){ img.style.display="none"; $("nq").style.display="block" };
     img.alt=meth.name+" QR code"; img.src=meth.qr;
