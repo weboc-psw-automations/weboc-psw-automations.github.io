@@ -480,3 +480,8 @@ input[type=file]{width:100%;padding:.55em .6em;border:1px dashed var(--line);bor
 .pc .bl .mn{display:block;margin-top:3px;font-size:.74rem;font-weight:700;color:var(--c1);line-height:1.35}
 .pmin{margin-top:8px;font-size:.76rem;opacity:.92}
 .ob-note{margin:12px 0 0;font-size:.76rem;opacity:.88;max-width:none}
+/* payment methods: preferred tag, hidden buttons, note */
+.mth[hidden]{display:none}
+.mth .rc{margin-left:6px;padding:1px 7px;border-radius:999px;background:var(--acc);color:var(--accink);font-size:.68rem;font-weight:700;vertical-align:middle}
+.mth[aria-pressed=true] .rc{background:var(--accink);color:var(--acc)}
+.mnote{margin:8px 0 0;font-size:.8rem;color:var(--mute);max-width:none}
